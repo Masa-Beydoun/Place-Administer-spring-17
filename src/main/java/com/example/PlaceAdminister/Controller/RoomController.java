@@ -8,6 +8,7 @@ import com.example.PlaceAdminister.Service.RoomService;
 import org.apache.coyote.Response;
 import org.hibernate.mapping.Set;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Time;
@@ -36,7 +37,7 @@ public class RoomController {
     //checked
 
     @GetMapping("{id}")
-    public RoomDTO show(@PathVariable("id") Long id){
+    public ResponseEntity<Object> show(@PathVariable("id") Long id){
         return roomService.show(id);
     }
     //checked

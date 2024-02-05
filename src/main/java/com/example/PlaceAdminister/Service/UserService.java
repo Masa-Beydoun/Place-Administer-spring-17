@@ -9,8 +9,10 @@
 //import lombok.RequiredArgsConstructor;
 //import org.apache.catalina.User;
 //import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.context.annotation.Bean;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 //import org.springframework.stereotype.Service;
+//import org.springframework.web.bind.annotation.RequestBody;
 //
 //import java.util.List;
 //
@@ -19,13 +21,11 @@
 //@Service
 //@RequiredArgsConstructor
 //public class UserService {
-//
-//    @Autowired
-//    private UserEntity user;
 //    @Autowired
 //    private UserRepository userRepository;
 //
-//    private final PasswordEncoder encoder;
+//    @Autowired
+//    private PasswordEncoder encoder;
 //
 //    private String userFilePath = "src/main/resources/Users.json";
 //
@@ -55,22 +55,22 @@
 //        userRepository.deleteById(id,this.userFilePath);
 //    }
 //
-//    public UserDTO login(UserRequest userRequest){
-//        List<UserDTO> users=userRepository.readFromJsonFile(this.userFilePath);
-//        for(int i=0;i<users.size();i++){
-//            if(users.get(i).getPhoneNumber()== user.getPhoneNumber()){
-//                if(users.get(i).getPassword()== user.getPassword())
-//                    return users.get(i);
-//                else new UserDTO("Wrong Passsword");
-//            }
-//        }
-//        return new UserDTO("Not Found");
-//    }
+////    public UserDTO login(UserRequest userRequest){
+////        List<UserDTO> users=userRepository.readFromJsonFile(this.userFilePath);
+////        for(int i=0;i<users.size();i++){
+////            if(users.get(i).getPhoneNumber()== user.getPhoneNumber()){
+////                if(users.get(i).getPassword()== user.getPassword())
+////                    return users.get(i);
+////                else new UserDTO("Wrong Passsword");
+////            }
+////        }
+////        return new UserDTO("Not Found");
+////    }
 //
-//    public UserDTO register(UserRequest userRequest){
+//    public UserDTO register(@RequestBody  UserRequest userRequest){
 //        List<UserDTO> users=userRepository.readFromJsonFile(this.userFilePath);
 //        for(int i=0;i<users.size();i++){
-//            if(users.get(i).getPhoneNumber()== user.getPhoneNumber()){
+//            if(users.get(i).getPhoneNumber()== userRequest.getPhoneNumber()){
 //                    return new UserDTO("already exist");
 //            }
 //        }

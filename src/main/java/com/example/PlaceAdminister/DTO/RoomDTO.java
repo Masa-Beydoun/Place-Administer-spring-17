@@ -6,13 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.http.HttpStatusCode;
 
 import java.util.*;
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
-public class RoomDTO extends AbstractDTO{
+public class RoomDTO extends AbstractDTO {
     private Long id;
     private Integer max_num_of_chairs;
     private Integer status;
