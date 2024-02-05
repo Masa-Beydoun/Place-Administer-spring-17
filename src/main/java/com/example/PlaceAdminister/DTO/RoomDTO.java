@@ -5,11 +5,13 @@ import com.example.PlaceAdminister.Request.RoomRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class RoomDTO extends AbstractDTO{
     private Long id;
     private Integer max_num_of_chairs;

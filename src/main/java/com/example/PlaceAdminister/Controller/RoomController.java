@@ -59,6 +59,11 @@ public class RoomController {
 //    }
 
 
+    @GetMapping("findByPlaceId/{id}")
+    public List<RoomDTO> showByPlaceId(@PathVariable("id") Long id){
+        return roomService.showRoomsByPlaceId(id);
+    }
+
     @DeleteMapping("delete/{id}")
     public void delete(@PathVariable("id") Long id){
         roomService.delete(id);

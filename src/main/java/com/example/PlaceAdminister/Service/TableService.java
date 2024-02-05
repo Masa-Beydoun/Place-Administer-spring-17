@@ -66,7 +66,7 @@ public class TableService {
 
     public TableDTO show(Long id)
     {
-        return tableRepository.searchDataById(id , this.roomFilePath);
+        return tableRepository.searchDataById(id , this.tableFilePath);
     }
 
     public List<TableDTO> showTablesByRoomId(Long id)

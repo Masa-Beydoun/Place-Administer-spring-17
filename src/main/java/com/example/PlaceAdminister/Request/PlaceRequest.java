@@ -14,5 +14,4 @@ import java.util.List;
 public class PlaceRequest {
     private String name;
     private List<String> locations;
-    private List<String> rooms;
 }

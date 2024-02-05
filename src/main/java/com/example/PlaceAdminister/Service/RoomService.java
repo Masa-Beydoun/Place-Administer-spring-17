@@ -17,7 +17,6 @@ public class RoomService {
     @Autowired
     private RoomRepository roomRepository;
     private String roomFilepath = "src/main/resources/Rooms.json";
-    private String placeFilepath = "src/main/resources/Places.json";
 
 
     public List<RoomDTO> getAllRooms() {
@@ -41,8 +40,9 @@ public class RoomService {
 
     public List<RoomDTO> showRoomsByPlaceId(Long id)
     {
-        return  roomRepository.searchByPlaceId(id , this.placeFilepath);
+        return  roomRepository.searchByPlaceId(id , this.roomFilepath);
     }
+
 
 
 //    public RoomDTO reserveRoom(Long id , Date date){

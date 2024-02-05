@@ -2,6 +2,8 @@ package com.example.PlaceAdminister.Controller;
 
 import com.example.PlaceAdminister.DTO.PlaceDTO;
 import com.example.PlaceAdminister.DTO.RoomCategoryDTO;
+import com.example.PlaceAdminister.DTO.RoomDTO;
+import com.example.PlaceAdminister.DTO.TableDTO;
 import com.example.PlaceAdminister.Request.PlaceRequest;
 import com.example.PlaceAdminister.Request.RoomCategoryRequest;
 import com.example.PlaceAdminister.Service.PlaceService;
@@ -16,14 +18,16 @@ public class PlaceController {
     @Autowired
     private PlaceService placeService;
 
-    @GetMapping("allplaces")
+    @GetMapping("allPlaces")
     public List<PlaceDTO> getAllPlacess() {
-        return placeService.getAllRoomCategories();
+        return placeService.getAllPlaces();
     }
 
-    @PostMapping("newplace")
+    @PostMapping("newPlace")
     public PlaceDTO addPlace(@RequestBody PlaceRequest placeRequest) {
         PlaceDTO placeDTO = new PlaceDTO(placeRequest);
         return placeService.store(placeDTO);
     }
+
+
 }
