@@ -4,6 +4,7 @@ import com.example.PlaceAdminister.auditing.ApplicationAuditAware;
 import com.example.PlaceAdminister.user.UserRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
@@ -19,13 +20,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
-
+  @Autowired
   private final UserRepository repository;
 
   @Bean
   public UserDetailsService userDetailsService() {
-    return username -> repository.findByEmail(username)
-        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    return username -> repository.findByEmail(username);
+//        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
   }
 
   @Bean

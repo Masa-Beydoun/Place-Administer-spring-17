@@ -23,7 +23,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class User implements UserDetails {
+public class UserEntity implements UserDetails {
 
   @Id
   @GeneratedValue
@@ -32,6 +32,7 @@ public class User implements UserDetails {
   private String lastname;
   private String email;
   private String password;
+  private Long PhoneNumber;
 
   @Enumerated(EnumType.STRING)
   private Role role;
