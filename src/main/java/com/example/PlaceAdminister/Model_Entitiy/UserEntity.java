@@ -3,6 +3,7 @@ package com.example.PlaceAdminister.Model_Entitiy;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -16,15 +17,15 @@ import java.util.List;
 @Setter
 @Getter
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue
-    Long id;
-    String username;
-    String password;
-
-    String message;
-
+    private Long id;
+    private String username;
+    private String password;
+    private String role;
+    private int phoneNumber;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

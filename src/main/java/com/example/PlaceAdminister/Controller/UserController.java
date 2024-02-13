@@ -1,59 +1,31 @@
-//package com.example.PlaceAdminister.Controller;
-//
-//import com.example.PlaceAdminister.DTO.TableDTO;
-//import com.example.PlaceAdminister.DTO.UserDTO;
-//import com.example.PlaceAdminister.Request.TableRequest;
-//import com.example.PlaceAdminister.Request.UserRequest;
-//import com.example.PlaceAdminister.Service.UserService;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.web.bind.annotation.*;
-//
-//import java.sql.Time;
-//import java.time.LocalDateTime;
-//import java.time.format.DateTimeFormatter;
-//import java.util.List;
-//
-//@RestController
-//@RequestMapping("api/v1/user")
-//public class UserController {
-//
-//    @Autowired
-//    private UserService userService;
-//
-//
-//    @GetMapping("/AllUsers")
-//    public List<UserDTO> index(){
-//        return userService.getAllTables();
-//    }
-//
-//    @PostMapping("/register")
-//    public UserDTO create(@RequestBody UserRequest request)
-//    {
-//        UserDTO userDTO = new UserDTO(request);
-//        return userService.register(request);
-//    }
-//
-//    @GetMapping("{id}")
-//    public UserDTO show(@PathVariable("id") Long id){
-//        return userService.show(id);
-//    }
-//
-//
-//    @PutMapping("update/{id}")
-//    public UserDTO edit(@PathVariable("id") Long id ,@RequestBody UserRequest request){
-//        UserDTO userDTO = new UserDTO(request);
-//        return userService.update(id ,userDTO);
-//    }
-//
-//    @DeleteMapping("delete/{id}")
-//    public void delete(@PathVariable("id") Long id ){
-//        userService.delete(id);
-//    }
-//
-//
-//    @GetMapping("login")
-//    public UserDTO login(@RequestBody UserRequest request){
-//        return userService.login(request);
-//
-//    }
-//}
+package com.example.PlaceAdminister.Controller;
+
+import com.example.PlaceAdminister.Model_Entitiy.UserEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Arrays;
+import java.util.List;
+
+@RestController
+@RequestMapping("api/v1/users")
+public class UserController {
+
+    private  static final List<UserEntity> USER_ENTITIES= Arrays.asList(
+            new UserEntity(1L,"masa","12345678","USER", 947439509),
+            new UserEntity(2L,"wassem","12345678","ADMIN", 947439509),
+            new UserEntity(3L,"kareem","12345678","SUPER_ADMIN", 947439509)
+    );
+    @GetMapping("/{userId}")
+    public UserEntity getUser(@PathVariable("userId") Long userId){
+        return USER_ENTITIES.stream()
+                .filter(userEntity -> userId.equals(userEntity.getId()))
+                .findFirst()
+                .orElseThrow(()-> new IllegalStateException(
+                        "user" + userId + "does not exist"
+        ));
+    }
+}
