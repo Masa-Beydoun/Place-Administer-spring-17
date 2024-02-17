@@ -107,9 +107,14 @@ public class ReservationService {
         return abstractRepository.UpdateById(id ,reservationDTO, reservationFilePath);
     }
 
+    public ReservationDTO getReservation(Long id){
+        return abstractRepository.findDataById(id ,reservationFilePath);
+    }
+
     public String cancelReservation(Long id){
         abstractRepository.deleteById(id ,reservationFilePath);
         return "Deleted Done successfully";
     }
+
 
 }

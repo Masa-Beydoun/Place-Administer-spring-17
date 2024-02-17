@@ -1,1 +1,1 @@
-[{"id":1,"type":"non-smoking"},{"id":2,"type":"smoking"},{"id":3,"type":"eating"}]
+[{"id":1,"type":"eating","place_id":1},{"id":3,"type":"smpking","place_id":2},{"id":4,"type":"smpking","place_id":1}]

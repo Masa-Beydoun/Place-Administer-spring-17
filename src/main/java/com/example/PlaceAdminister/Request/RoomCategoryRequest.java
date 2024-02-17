@@ -14,4 +14,5 @@ import java.util.Set;
 @NoArgsConstructor
 public class RoomCategoryRequest {
     private String type;
+    private Long place_id;
 }

@@ -28,7 +28,9 @@ public class RoomCategoryEntity {
     private Long id;
     @JsonProperty("type")
     private String type;
+    private Integer num_of_seats;
 
+    private Long place_id;
 
     public RoomCategoryEntity(String type) {
         this.type=type;

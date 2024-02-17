@@ -1,11 +1,8 @@
 package com.example.PlaceAdminister.Service;
 
 import com.example.PlaceAdminister.DTO.PlaceDTO;
-import com.example.PlaceAdminister.DTO.RoomCategoryDTO;
 import com.example.PlaceAdminister.Model_Entitiy.PlaceEntity;
-import com.example.PlaceAdminister.Model_Entitiy.RoomCategoryEntity;
 import com.example.PlaceAdminister.Repository.PlaceRepository;
-import com.example.PlaceAdminister.Repository.RoomCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +26,7 @@ public class PlaceService {
         return placeRepository.writeToJsonFile(placeDTO ,this.filepath);
     }
 
-    public PlaceDTO show(Long id)
+    public PlaceDTO getById(Long id)
     {
         return placeRepository.searchDataById(id , this.filepath);
     }
@@ -37,5 +34,9 @@ public class PlaceService {
 
     public PlaceDTO update(Long id , PlaceDTO placeDTO){
         return placeRepository.UpdateById(id ,placeDTO,this.filepath);
+    }
+
+    public void delete(Long id){
+        placeRepository.deleteById(id ,this.filepath);
     }
 }

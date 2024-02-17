@@ -1,8 +1,6 @@
 package com.example.PlaceAdminister.Service;
 
 import com.example.PlaceAdminister.DTO.ReservationDTO;
-import com.example.PlaceAdminister.DTO.RoomDTO;
-import com.example.PlaceAdminister.DTO.TableCategoryDTO;
 import com.example.PlaceAdminister.DTO.TableDTO;
 import com.example.PlaceAdminister.Model_Entitiy.TableEntity;
 import com.example.PlaceAdminister.Repository.RoomRepository;
@@ -11,8 +9,6 @@ import com.example.PlaceAdminister.Repository.TableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
-import java.time.LocalTime;
 import java.util.List;
 
 import static java.time.LocalTime.now;
@@ -61,26 +57,26 @@ public class TableService {
     //        if(room.getMax_num_of_chairs() < tableCategory.getNum_of_seats()  )
     //            return new TableDTO("can't add new table to this room because there is no space for it");
 
-        return tableRepository.writeToJsonTable(tableDTO ,this.roomFilePath);
+        return tableRepository.writeToJsonTable(tableDTO ,this.tableFilePath);
     }
 
-    public TableDTO show(Long id)
+    public TableDTO getTable(Long id)
     {
         return tableRepository.searchDataById(id , this.tableFilePath);
     }
 
     public List<TableDTO> showTablesByRoomId(Long id)
     {
-        return  tableRepository.searchByRoomId(id , this.roomFilePath);
+        return  tableRepository.searchByRoomId(id , this.tableFilePath);
     }
 
     public List<TableDTO> showTablesByCategoryId(Long id)
     {
-        return  tableRepository.searchByCategoryId(id , this.roomFilePath);
+        return  tableRepository.searchByCategoryId(id , this.tableFilePath);
     }
 
     public TableDTO update(Long id , TableDTO tableDTO){
-        return tableRepository.UpdateById(id ,tableDTO,this.roomFilePath);
+        return tableRepository.UpdateById(id ,tableDTO,this.tableFilePath);
     }
 
 
@@ -94,6 +90,6 @@ public class TableService {
 //    }
 
     public void delete(Long id){
-        tableRepository.deleteById(id,this.roomFilePath);
+        tableRepository.deleteById(id,this.tableFilePath);
     }
 }

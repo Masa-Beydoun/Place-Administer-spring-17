@@ -45,6 +45,14 @@ public class AbstractRepository {
         return models;
     }
 
+    public ReservationDTO findDataById(Long id , String filePath) {
+        List<ReservationDTO> dataList = readFromJsonReservation(filePath);
+        return dataList.stream()
+                .filter(data -> data.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+    }
+
     public ReservationDTO reserveTable(ReservationDTO reservationDTO , String filePath){
         if(reservationDTO!= null){
             try {

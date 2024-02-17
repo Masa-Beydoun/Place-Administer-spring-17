@@ -1,7 +1,6 @@
 package com.example.PlaceAdminister.Service;
 
 import com.example.PlaceAdminister.DTO.TableCategoryDTO;
-import com.example.PlaceAdminister.DTO.TableDTO;
 import com.example.PlaceAdminister.Model_Entitiy.TableCategoryEntity;
 import com.example.PlaceAdminister.Repository.TableCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,7 @@ public class TableCategoryService {
         return tableCategoryRepository.writeToJsonFile(tableCategoryDTO ,this.filepath);
     }
 
-    public TableCategoryDTO show(Long id)
+    public TableCategoryDTO getTableCategory(Long id)
     {
         return tableCategoryRepository.searchDataById(id , this.filepath);
     }
@@ -38,6 +37,10 @@ public class TableCategoryService {
 
     public TableCategoryDTO update(Long id , TableCategoryDTO tableCategoryDTO){
         return tableCategoryRepository.UpdateById(id ,tableCategoryDTO,this.filepath);
+    }
+
+    public void delete(Long id){
+         tableCategoryRepository.deleteById(id,filepath);
     }
 
 

@@ -16,8 +16,11 @@ import java.util.Set;
 public class RoomCategoryDTO extends AbstractDTO{
     private Long id;
     private String type;
+    private Long place_id;
+
 
     public RoomCategoryDTO(RoomCategoryRequest request) {
         this.type=request.getType();
+        this.place_id = request.getPlace_id();
     }
 }
