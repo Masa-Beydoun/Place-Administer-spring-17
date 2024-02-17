@@ -21,7 +21,7 @@ public class RoomController {
     @Autowired
     private RoomService roomService=new RoomService();
 
-    @GetMapping("/AllRooms")
+    @GetMapping("/allRooms")
     public List<RoomDTO> index(){
         return roomService.getAllRooms();
     }
@@ -31,7 +31,6 @@ public class RoomController {
     public RoomDTO create(@RequestBody RoomRequest request)
     {
         RoomDTO roomDTO = new RoomDTO(request);
-        System.out.println(request.getMax_num_of_chairs());
         return roomService.store(roomDTO);
     }
     //checked

@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "id": 1,
+    "username":"masa",
+    "phoneNumber": 947439509,
+    "role": "SUPER_ADMIN",
+    "password":"password"
+  },
+  {
+    "id": 2,
+    "username":"wassem",
+    "phoneNumber": 947439509,
+    "role": "ADMIN",
+    "password":"password"
+  },
+  {
+    "id": 3,
+    "username":"kareem",
+    "phoneNumber": 947439509,
+    "role": "USER",
+    "password":"password"
+  }
+]

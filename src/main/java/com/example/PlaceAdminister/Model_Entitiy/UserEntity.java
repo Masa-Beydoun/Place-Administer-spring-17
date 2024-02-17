@@ -1,5 +1,8 @@
 package com.example.PlaceAdminister.Model_Entitiy;
 
+import com.example.PlaceAdminister.Request.RoomRequest;
+import com.example.PlaceAdminister.Request.UserRequest;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -20,13 +23,27 @@ import java.util.List;
 @AllArgsConstructor
 public class UserEntity implements UserDetails {
     @Id
-    @GeneratedValue
+    @JsonProperty("id")
     private Long id;
+    @JsonProperty("username")
     private String username;
+    @JsonProperty("password")
     private String password;
+    @JsonProperty("role")
     private String role;
+    @JsonProperty("phoneNumber")
     private int phoneNumber;
+    @JsonProperty("token")
+    private String token;
 
+
+    public UserEntity(UserRequest userRequest) {
+        this.username=userRequest.getUserName();
+        this.role=userRequest.getRole();
+        this.password=userRequest.getPassword();
+        this.phoneNumber=userRequest.getPhoneNumber();
+
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
