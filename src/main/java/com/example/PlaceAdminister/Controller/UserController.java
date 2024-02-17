@@ -4,6 +4,7 @@ import com.example.PlaceAdminister.DTO.RoomDTO;
 import com.example.PlaceAdminister.DTO.UserDTO;
 import com.example.PlaceAdminister.Model_Entitiy.UserEntity;
 import com.example.PlaceAdminister.Repository.UserRepository;
+import com.example.PlaceAdminister.Request.LogoutRequest;
 import com.example.PlaceAdminister.Request.UserRequest;
 import com.example.PlaceAdminister.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +37,10 @@ public class UserController {
         return userService.login(user);
     }
 
+
     @PutMapping("logout")
     public UserEntity logout(@RequestBody LogoutRequest logoutRequest){
-        return userService.login(logoutRequest);
+        return userService.logout(logoutRequest);
     }
 
 
