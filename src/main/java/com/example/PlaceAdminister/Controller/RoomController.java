@@ -4,6 +4,7 @@ import com.example.PlaceAdminister.DTO.RoomDTO;
 import com.example.PlaceAdminister.Request.RoomRequest;
 import com.example.PlaceAdminister.Service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,8 @@ public class RoomController {
     @Autowired
     private RoomService roomService=new RoomService();
 
-    @GetMapping("{place_id}/AllRooms")
+
+   @GetMapping("{place_id}/AllRooms")
     public ResponseEntity index(@PathVariable("place_id") Long place_id){
         if(place_id == null || place_id<=0){
             return ResponseEntity.badRequest().body("Invalid Id");
@@ -26,7 +28,6 @@ public class RoomController {
            return ResponseEntity.status(200).body("there is no Rooms yet");
        }
         return ResponseEntity.ok(roomsList);
-
     }
     //checked
 
@@ -38,6 +39,7 @@ public class RoomController {
             return ResponseEntity.badRequest().body("validate your data please");
         }
         RoomDTO roomDTO = new RoomDTO(request);
+
 //        System.out.println(request.getMax_num_of_chairs());
         RoomDTO room = roomService.store(roomDTO);
         if(room == null){
@@ -45,8 +47,6 @@ public class RoomController {
         }
         return ResponseEntity.ok(room);
     }
-    //checked
-
     @GetMapping("/{place_id}/show/{id}")
     public ResponseEntity show(@PathVariable("id") Long id ,@PathVariable("place_id") Long place_id){
         if(id == null || id<=0){
@@ -64,6 +64,7 @@ public class RoomController {
             return  ResponseEntity.ok(room);
         }
          }
+
 
     @PutMapping("/{place_id}/update/{id}")
     public ResponseEntity edit(@PathVariable("id") Long id ,@RequestBody RoomRequest request ,@PathVariable("place_id") Long place_id){
@@ -99,6 +100,13 @@ public class RoomController {
             return ResponseEntity.status(401).body("you don't have permission to enter to this data");
         }
 
+    @GetMapping("findByPlaceId/{id}")
+    public List<RoomDTO> showByPlaceId(@PathVariable("id") Long id){
+        return roomService.showRoomsByPlaceId(id);
+    }
+
+    @DeleteMapping("delete/{id}")
+    public void delete(@PathVariable("id") Long id){
         roomService.delete(id);
         return ResponseEntity.ok("Delete Done successfully");
     }

@@ -5,12 +5,15 @@ import com.example.PlaceAdminister.Request.RoomRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+import org.springframework.http.HttpStatusCode;
 
 import java.util.*;
 @Getter
 @Setter
 @NoArgsConstructor
-public class RoomDTO extends AbstractDTO{
+@ToString
+public class RoomDTO extends AbstractDTO {
     private Long id;
     private Integer max_num_of_chairs;
     private Integer status;

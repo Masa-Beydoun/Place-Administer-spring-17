@@ -17,7 +17,7 @@ public class PlaceService {
     private final String filepath = "src/main/resources/Places.json";
 
 
-    public List<PlaceDTO> getAllRoomCategories() {
+    public List<PlaceDTO> getAllPlaces() {
         return placeRepository.readFromJsonFile(filepath);
 
     }
