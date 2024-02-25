@@ -41,6 +41,13 @@ public class ReservationController {
         return ResponseEntity.ok(reservationResult);
     }
 
+    @PostMapping("reservation/takeMine/{id}")
+    public ResponseEntity takeMyReservation(@PathVariable("id") Long id){
+        if(id == null || id<=0){
+            return ResponseEntity.badRequest().body("Invalid Id");
+        }
+        return ResponseEntity.ok(reservationService.takeReserve(id));
+    }
     @PutMapping("editReservation/{id}")
     public ResponseEntity edit(@PathVariable("id") Long id ,@RequestBody MakeReservationRequest request){
         if(id == null || id<=0){

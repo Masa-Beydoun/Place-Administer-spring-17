@@ -97,6 +97,7 @@ public class AbstractRepository {
                     element.put("room_id" ,reservationDTO.getRoom_id());
                     element.put("table_id" ,reservationDTO.getTable_id());
                     element.put("num_of_seats" , reservationDTO.getNum_of_seats());
+                    element.put("status" , reservationDTO.getStatus());
                     // Add more modifications as needed
                 }
             }

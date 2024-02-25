@@ -6,8 +6,12 @@ import com.example.PlaceAdminister.Repository.AbstractRepository;
 import com.example.PlaceAdminister.Repository.TableRepository;
 import com.pusher.rest.Pusher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 @Service
@@ -27,6 +31,41 @@ public class ReservationService {
         return abstractRepository.readFromJsonReservation(reservationFilePath);
     }
 
+
+    @Scheduled(fixedRate = 5000)
+    public void checkIfReservationMissed(){
+//        LocalTime localTime = LocalTime.now();
+
+        LocalDateTime localDateTime = LocalDateTime.now();
+        LocalTime localTime = localDateTime.toLocalTime();
+//        System.out.println(  localTime.plusHours(1));
+
+            List<ReservationDTO> allReservations =  abstractRepository.readFromJsonReservation(reservationFilePath);
+//                    .stream().filter(i->i.getStatus().equals(1))
+//                    .filter(j->j.getTime().getHours() == localTime.getHour()).forEach(nowReservation->{
+//                        nowReservation.setStatus(3);
+//                    });
+////            allReservations.stream().forEach(reservationDTO -> reservationDTO);
+                allReservations.forEach(nowReservation ->{
+                    if(nowReservation.getTime().getHours()
+                            == localTime.getHour()
+                            && nowReservation.getStatus() == 1){
+                            nowReservation.setStatus(3);
+                            abstractRepository.UpdateById(nowReservation.getId()
+                                    , nowReservation
+                                    ,reservationFilePath);
+                    }
+                });
+    }
+
+
+    public ReservationDTO takeReserve(Long id){
+          ReservationDTO reservationDTO = abstractRepository.findDataById(id ,reservationFilePath);
+          reservationDTO.setStatus(2);
+          abstractRepository.UpdateById(id,reservationDTO,reservationFilePath);
+          return reservationDTO;
+    }
+
     public ReservationDTO reserve(ReservationDTO reservationDTO){
         String filePath = "src/main/resources/Reservations.json";
 //        System.out.println(reservationDTO.getNum_of_seats());
@@ -34,8 +73,12 @@ public class ReservationService {
 
        if(reservationDTO.getType() ==1){
             ReservationDTO existedReservation=  reservationDTOList.stream()
-                   .filter(i ->i.getRoom_id().equals(reservationDTO.getRoom_id()))
-                    .filter(j -> (j.getTime().getHours() == reservationDTO.getTime().getHours()) || (j.getTime().getHours() + j.getPeriod_of_reservations() -1 == reservationDTO.getTime().getHours()))
+                   .filter(i ->i.getRoom_id()
+                           .equals(reservationDTO.getRoom_id()))
+                    .filter(j -> (j.getTime().getHours()
+                            == reservationDTO.getTime().getHours())
+                            || (j.getTime().getHours() + j.getPeriod_of_reservations() -1
+                            == reservationDTO.getTime().getHours()))
                    .findFirst().orElse(null) ;
             if(existedReservation != null){
                 return new ReservationDTO("Sorry, This room in this time is already reserved");
@@ -44,8 +87,12 @@ public class ReservationService {
        }
        else if (reservationDTO.getType() == 2){
            ReservationDTO existedReservation = reservationDTOList.stream()
-                   .filter(i->i.getTable_id().equals(reservationDTO.getTable_id()))
-                   .filter(j -> (j.getTime().getHours() == reservationDTO.getTime().getHours()) || (j.getTime().getHours() + j.getPeriod_of_reservations() -1 == reservationDTO.getTime().getHours()))
+                   .filter(i->i.getTable_id()
+                           .equals(reservationDTO.getTable_id()))
+                   .filter(j -> (j.getTime().getHours()
+                           == reservationDTO.getTime().getHours())
+                           || (j.getTime().getHours() + j.getPeriod_of_reservations() -1
+                           == reservationDTO.getTime().getHours()))
                    .findFirst().orElse(null);
 
            TableDTO tableDTO = tableRepository.searchDataById(reservationDTO.getTable_id() ,TableFilePath);
@@ -56,8 +103,12 @@ public class ReservationService {
 
 
            ReservationDTO existedRoomReservation = reservationDTOList.stream()
-                   .filter(i->i.getRoom_id().equals(tableDTO.getRoom_id()))
-                   .filter(j -> (j.getTime().getHours() == reservationDTO.getTime().getHours()) || (j.getTime().getHours() + j.getPeriod_of_reservations() -1 == reservationDTO.getTime().getHours()))
+                   .filter(i->i.getRoom_id()
+                           .equals(tableDTO.getRoom_id()))
+                   .filter(j -> (j.getTime().getHours()
+                           == reservationDTO.getTime().getHours())
+                           || (j.getTime().getHours() + j.getPeriod_of_reservations() -1
+                           == reservationDTO.getTime().getHours()))
                    .findFirst().orElse(null);
 
            if(existedReservation != null){
@@ -73,8 +124,10 @@ public class ReservationService {
        if(reservationDTO.getType() == 3){
            // if table is reserved..
            ReservationDTO existedReservation = reservationDTOList.stream()
-                   .filter(i->i.getTable_id().equals(reservationDTO.getTable_id()))
-                   .filter(j -> j.getTime().getHours() == reservationDTO.getTime().getHours())
+                   .filter(i->i.getTable_id()
+                           .equals(reservationDTO.getTable_id()))
+                   .filter(j -> j.getTime().getHours()
+                           == reservationDTO.getTime().getHours())
                    .findFirst().orElse(null);
 
            // if number of available seats is enough
@@ -113,6 +166,7 @@ public class ReservationService {
 //
 
     }
+
     public ReservationDTO update(Long id , ReservationDTO reservationDTO){
         return abstractRepository.UpdateById(id ,reservationDTO, reservationFilePath);
     }

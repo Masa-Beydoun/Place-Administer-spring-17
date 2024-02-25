@@ -38,6 +38,9 @@ public class ReservationsEntity {
     @JsonProperty("period_of_reservations")
     private Integer period_of_reservations;
 
+    @JsonProperty("status")
+    private Integer status; // 1 = Delayed (not now) - 2 = occupied (user take it) - 3 = waiting (time is now but user doesn't take it yet)
+
 //    public ReservationsEntity(Long id,Integer type,Long room_id,Long table_id,Long seat_id,LocalDateTime time,Integer period_of_reservations){
 //       this.id = id;
 //        this.type  = type;

@@ -26,7 +26,8 @@ public class ReservationDTO extends AbstractDTO {
     private Time time;
 
     private Integer period_of_reservations;
-    
+
+    private Integer status; // 1 = Delayed (not now) - 2 = occupied (user take it) - 3 = waiting (time is now but user doesn't take it yet)
     private String message;
 
 
@@ -38,6 +39,7 @@ public class ReservationDTO extends AbstractDTO {
         num_of_seats = request.getNum_of_seats();
         time = request.getTime();
         period_of_reservations =request.getPeriod_of_reservations();
+        status = 1;
     }
 
     public ReservationDTO(Long id ,Integer type , Long room_id , Long table_id, Long num_of_seats ,Time time, Integer period_of_reservations){
@@ -55,6 +57,8 @@ public class ReservationDTO extends AbstractDTO {
         }
         this. time = time;
         this. period_of_reservations =period_of_reservations;
+
+        status = 1;
     }
 
     public ReservationDTO(ReservationsEntity reservationsEntity){

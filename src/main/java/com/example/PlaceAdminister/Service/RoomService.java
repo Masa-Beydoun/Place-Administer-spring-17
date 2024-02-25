@@ -36,8 +36,8 @@ public class RoomService {
         if(roomCategoryService.getAllRoomCategories(roomDTO.getPlaceId()).size() == 0){
             return new RoomDTO("you should add some room category first");
         }
-        if(placeService.getAllPlaces().size() ==0){
-            return new RoomDTO("you should add some place first");
+        if(placeService.getAllPlaces().stream().filter(i->i.getId().equals(roomDTO.getPlaceId())).toList().size() == 0){
+            return new RoomDTO("there is no place such this ,add place first");
         }
         return roomRepository.writeToJsonFile(roomDTO ,this.roomFilepath);
     }
