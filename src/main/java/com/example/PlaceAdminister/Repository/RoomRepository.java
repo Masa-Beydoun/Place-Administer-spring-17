@@ -118,11 +118,11 @@ public class RoomRepository extends AbstractRepository{
         }
     }
 
-    public List<RoomDTO> searchByPlaceId(Long room_id, String filePath) {
+    public List<RoomDTO> searchByPlaceId(Long placeId, String filePath) {
         List<RoomDTO> dataList = readFromJsonFile(filePath);
-        List<RoomDTO> roomDTOList =  dataList.stream()
-                .filter(data -> data.getId().equals(room_id)).collect(Collectors.toList());
-        return roomDTOList;
+        System.out.println(dataList);
+        return dataList.stream()
+                .filter(data -> data.getPlaceId().equals(placeId)).collect(Collectors.toList());
     }
 
 }

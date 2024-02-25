@@ -1,6 +1,7 @@
 package com.example.PlaceAdminister.Controller;
 
 import com.example.PlaceAdminister.DTO.PlaceDTO;
+
 import com.example.PlaceAdminister.Request.PlaceRequest;
 import com.example.PlaceAdminister.Service.PlaceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import java.util.List;
 public class PlaceController {
     @Autowired
     private PlaceService placeService;
+
 
     @GetMapping("allplaces")
     public ResponseEntity getAllPlacess() {
@@ -36,6 +38,7 @@ public class PlaceController {
         }
         return ResponseEntity.ok(place);
     }
+
 
 
     @GetMapping("show/{id}")
@@ -81,6 +84,5 @@ public class PlaceController {
         placeService.delete(id);
         return ResponseEntity.ok("delete done successfully");
     }
-
 
 }

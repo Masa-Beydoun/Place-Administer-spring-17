@@ -4,6 +4,7 @@ import com.example.PlaceAdminister.DTO.RoomDTO;
 import com.example.PlaceAdminister.Model_Entitiy.RoomEntity;
 import com.example.PlaceAdminister.Repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,7 +23,6 @@ public class RoomService {
     @Autowired
     private PlaceService placeService;
     private String roomFilepath = "src/main/resources/Rooms.json";
-    private String placeFilepath = "src/main/resources/Places.json";
 
 
     public List<RoomDTO> getAllRooms(Long id) {
@@ -42,6 +42,7 @@ public class RoomService {
         return roomRepository.writeToJsonFile(roomDTO ,this.roomFilepath);
     }
 
+
     public RoomDTO getItem(Long id)
     {
       RoomDTO room =   roomRepository.searchDataById(id , this.roomFilepath);
@@ -55,8 +56,9 @@ public class RoomService {
 
     public List<RoomDTO> showRoomsByPlaceId(Long id)
     {
-        return  roomRepository.searchByPlaceId(id , this.placeFilepath);
+        return  roomRepository.searchByPlaceId(id , this.roomFilepath);
     }
+
 
     public void delete(Long id){
         roomRepository.deleteById(id,this.roomFilepath);

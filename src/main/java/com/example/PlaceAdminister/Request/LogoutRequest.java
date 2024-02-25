@@ -5,13 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
-@AllArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
-public class PlaceRequest {
-    private String name;
-    private List<String> locations;
+public class LogoutRequest {
+
+    UserRequest request;
+    String token;
+
 }
