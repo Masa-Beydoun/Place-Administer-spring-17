@@ -1,7 +1,5 @@
 package com.example.PlaceAdminister.Repository;
 
-import com.example.PlaceAdminister.DTO.TableDTO;
-import com.example.PlaceAdminister.DTO.UserDTO;
 import com.example.PlaceAdminister.Model_Entitiy.UserEntity;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,49 +18,46 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@Repository
 public class UserRepository{
+    private final String userFilePath="src/main/resources/Users.json";
     public List<UserEntity> readFromJsonFile(String filePath) {
-
+        List<UserEntity> models=null;
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            List<UserEntity> models = objectMapper.readValue(new File(filePath), new TypeReference<>() {});
-            for(int i=0;i<models.size();i++){
-                System.out.println(models.get(i).toString());
-            }
+             models = objectMapper.readValue(new File(userFilePath), new TypeReference<>() {});
             return models;
         } catch (IOException e) {
             return new ArrayList<>();
         }
-
     }
-
-    public UserEntity writeToJsonFile(UserEntity models, String filePath) {
+    public UserEntity writeToJsonFile(UserEntity newUser, String filePath) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
 
             List<UserEntity> userEntities= readFromJsonFile(filePath);
-            Long id= Long.valueOf(1);
-            if(!(userEntities.size()==0)) id=(Long)userEntities.get(userEntities.size()-1).getId()+1;
-            models.setId(id);
-            userEntities.add(models);
+            System.out.println(userEntities.toString());
+            Long id= 1L;
+            if(!(userEntities.size()==0)) id=userEntities.get(userEntities.size()-1).getId()+1;
+            newUser.setId(id);
+            userEntities.add(newUser);
+            System.out.println(userEntities);
 
             objectMapper.writeValue(new File(filePath), userEntities);
         } catch (IOException e) {
             e.printStackTrace(); // Handle the exception appropriately in a production environment
         }
-        return models;
+        return newUser;
     }
-
-
     public UserEntity searchDataById(Long id , String filePath) {
         List<UserEntity> dataList = readFromJsonFile(filePath);
-        return dataList.stream()
-                .filter(data -> data.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+        for(int i=0;i<dataList.size();i++){
+            if(dataList.get(i).getId()==id)
+                return dataList.get(i);
+        }
+        return null;
     }
-
-    public void deleteById(Long id , String filePath){
+    public void delete(UserEntity userEntity, String filePath){
         try {
             // Step 1: Read the JSON file and parse it
             File jsonFile = new File(filePath);
@@ -73,7 +69,7 @@ public class UserRepository{
             // Step 2: Identify and remove the specific element
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject element = jsonArray.getJSONObject(i);
-                if (element.getLong("id") == id) {
+                if (element.getLong("id") == userEntity.getId()) {
                     jsonArray.remove(i); // Remove the JSONObject at index i
                     break; // Exit the loop once the element is removed
                 }
@@ -90,31 +86,22 @@ public class UserRepository{
             throw new RuntimeException(e);
         }
     }
-
-
-
     public UserEntity findByUsername(String userName,String filePath){
-        List<UserEntity> users= readFromJsonFile(filePath);
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getUsername() == (userName)) { // Assuming "id" is the identifier for the element
-                return users.get(i);
-            }
+        List<UserEntity> dataList = readFromJsonFile(filePath);
+        for(int i=0;i<dataList.size();i++){
+            if(dataList.get(i).getUsername().equals(userName))
+                return dataList.get(i);
         }
         return null;
     }
-
-
-    public UserEntity findByPhoneNumber(Long number, String filePath){
-        List<UserEntity> users= readFromJsonFile(filePath);
-        // Step 2 and 3: Identify and update the specific element
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getPhoneNumber() == (number)) { // Assuming "id" is the identifier for the element
-                return users.get(i);
-            }
+    public UserEntity findByPhoneNumber(String number, String filePath){
+        List<UserEntity> dataList = readFromJsonFile(filePath);
+        for(int i=0;i<dataList.size();i++){
+            if(dataList.get(i).getPhoneNumber().equals(number))
+                return dataList.get(i);
         }
         return null;
     }
-
     public UserEntity UpdateById(Long id , UserEntity userEntity , String filePath){
         try {
             // Step 1: Read the JSON file and parse it
@@ -132,16 +119,7 @@ public class UserRepository{
                     element.put("phoneNumber", userEntity.getPhoneNumber());
                     element.put("password", userEntity.getPassword());
                     element.put("role", userEntity.getRole());
-                    element.put("token", userEntity.getToken());
                     element.put("username", userEntity.getUsername());
-                    element.put("authorities", userEntity.getAuthorities());
-                    element.put("isAccountNonExpired", userEntity.isAccountNonExpired());
-                    element.put("isAccountNonLocked", userEntity.isAccountNonLocked());
-                    element.put("isCredentialsNonExpired", userEntity.isCredentialsNonExpired());
-                    element.put("isEnabled", userEntity.isEnabled());
-
-
-
                 }
             }
 
@@ -157,6 +135,23 @@ public class UserRepository{
         }
 
         return userEntity;
+    }
+
+    public UserEntity store(UserEntity userEntity){
+        return writeToJsonFile(userEntity,userFilePath);
+    }
+
+    public UserEntity index(int id){
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<UserEntity> models = objectMapper.readValue(new File(userFilePath), new TypeReference<>() {});
+            for(int i=0;i<models.size();i++){
+                if(models.get(i).getId()==id) return models.get(i);
+            }
+        } catch (IOException e) {
+            return null;
+        }
+        return null;
     }
 
 

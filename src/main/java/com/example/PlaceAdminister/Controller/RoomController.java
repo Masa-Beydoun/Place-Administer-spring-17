@@ -88,17 +88,19 @@ public class RoomController {
     }
 
     @DeleteMapping("/{place_id}/delete/{id}")
-    public ResponseEntity delete(@PathVariable("id") Long id ,@PathVariable("place_id") Long place_id){
-        if(id == null || id<=0){
+    public ResponseEntity delete(@PathVariable("id") Long id ,@PathVariable("place_id") Long place_id) {
+        if (id == null || id <= 0) {
             return ResponseEntity.badRequest().body("Invalid Id");
         }
-        RoomDTO room= roomService.getItem(id);
-        if(room == null){
+        RoomDTO room = roomService.getItem(id);
+        if (room == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("can't find this item");
         }
-        if(room.getPlaceId() != place_id){
+        if (room.getPlaceId() != place_id) {
             return ResponseEntity.status(401).body("you don't have permission to enter to this data");
         }
+        return ResponseEntity.status(200).body(room);
+    }
 
     @GetMapping("findByPlaceId/{id}")
     public List<RoomDTO> showByPlaceId(@PathVariable("id") Long id){
@@ -106,7 +108,7 @@ public class RoomController {
     }
 
     @DeleteMapping("delete/{id}")
-    public void delete(@PathVariable("id") Long id){
+    public ResponseEntity delete(@PathVariable("id") Long id){
         roomService.delete(id);
         return ResponseEntity.ok("Delete Done successfully");
     }

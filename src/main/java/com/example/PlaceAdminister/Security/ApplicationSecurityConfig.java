@@ -1,117 +1,69 @@
 package com.example.PlaceAdminister.Security;
 
-import com.example.PlaceAdminister.DTO.UserDTO;
-import com.example.PlaceAdminister.Model_Entitiy.UserEntity;
-import com.example.PlaceAdminister.Repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 //import static com.example.PlaceAdminister.Security.ApplicationUserRole.*;
-import java.util.ArrayList;
-import java.util.List;
 
-import static com.example.PlaceAdminister.Security.ApplicationUserRole.*;
-import static org.springframework.security.config.Customizer.withDefaults;
+import static com.example.PlaceAdminister.Security.Role.*;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class ApplicationSecurityConfig {
 
-//    private final PasswordEncoder passwordEnoder;
-//    @Autowired
-//    public ApplicationSecurityConfig(PasswordEncoder passwordEnoder) {
-//        this.passwordEnoder = passwordEnoder;
-//    }
+    private final JwtAuthenticationFilter jwtAuthFilter;
+    private final AuthenticationProvider authenticationProvider;
 
-    @Autowired
-    private UserRepository userRepository;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("api/v1/places/allPlaces").hasRole(SUPER_ADMIN.name())
-                        .requestMatchers("api/v1/rooms/allRooms").hasRole(ADMIN.name())
-                        .requestMatchers("api/v1/places/allPlaces").permitAll()
-                        .requestMatchers("api/v1/rooms/findByPlaceId").hasRole(SUPER_ADMIN.name())
-//                        .requestMatchers("/").permitAll()
+
+        return http
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/v1/users/newOnePlaceAdmin").hasRole(SUPER_ADMIN.name())
+                        .requestMatchers("/api/v1/users/newAdmin").hasRole(ONE_PLACE_ADMIN.name())
+                        .requestMatchers("/api/v1/rooms/**").hasRole(ADMIN.name())
+                        .requestMatchers("/api/v1/tables/**").hasRole(ADMIN.name())
+                        .requestMatchers("/api/v1/roomCategories/**").hasRole(ADMIN.name())
+                        .requestMatchers("/api/v1/table-category/**").hasRole(ADMIN.name())
+                        .requestMatchers("/api/v1/read/**").hasRole(USER.name())
                         .anyRequest().authenticated()
                 )
-                .httpBasic(withDefaults());
-        return http.build();
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthFilter , UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
-
 //    @Bean
-//    public WebSecurityCustomizer webSecurityCustomizer() {
-//        return (web) -> web.ignoring().antMatchers("/ignore1", "/ignore2");
-//    }
+//    public InMemoryUserDetailsManager userDetailsService() {
+//        List<UserDetails> userDetails= new ArrayList<>();
+//        List<UserEntity> userEntities=userRepository.readFromJsonFile("src/main/resources/Users.json");
 //
+//        for(int i=0;i<userEntities.size();i++){
+//            userDetails.add(User.withDefaultPasswordEncoder()
+//                            .username(userEntities.get(i).getUsername())
+////                .password(passwordEnoder.encode("password"))
+//                            .password(userEntities.get(i).getPassword())
+//                            .roles(userEntities.get(i).getRole().name())
+//                            .build()
+//            );
+//            System.out.println(userDetails.get(i).toString());
 //
-//
-//    @Bean
-//    public EmbeddedLdapServerContextSourceFactoryBean contextSourceFactoryBean() {
-//        EmbeddedLdapServerContextSourceFactoryBean contextSourceFactoryBean =
-//                EmbeddedLdapServerContextSourceFactoryBean.fromEmbeddedLdapServer();
-//        contextSourceFactoryBean.setPort(0);
-//        return contextSourceFactoryBean;
-//    }
-//
-//    @Bean
-//    AuthenticationManager ldapAuthenticationManager(
-//            BaseLdapPathContextSource contextSource) {
-//        LdapBindAuthenticationManagerFactory factory =
-//                new LdapBindAuthenticationManagerFactory(contextSource);
-//        factory.setUserDnPatterns("uid={0},ou=people");
-//        factory.setUserDetailsContextMapper(new PersonContextMapper());
-//        return factory.createAuthenticationManager();
-//    }
-//    @Bean
-//    public DataSource dataSource() {
-//        return new EmbeddedDatabaseBuilder()
-//                .setType(EmbeddedDatabaseType.H2)
-//                .addScript(JdbcDaoImpl.DEFAULT_USER_SCHEMA_DDL_LOCATION)
-//                .build();
-//    }
-//
-//        @Bean
-//        public UserDetailsManager users(DataSource dataSource) {
-//            UserDetails user = User.withDefaultPasswordEncoder()
-//                    .username("user")
-//                    .password("password")
-//                    .roles("USER")
-//                    .build();
-//            JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
-//            users.createUser(user);
-//            return users;
 //        }
-    @Bean
-    public InMemoryUserDetailsManager userDetailsService() {
-        List<UserDetails> userDetails= new ArrayList<>();
-        List<UserEntity> userDTOS=userRepository.readFromJsonFile("src/main/resources/Users.json");
-
-        for(int i=0;i<userDTOS.size();i++){
-            userDetails.add(User.withDefaultPasswordEncoder()
-                            .username(userDTOS.get(i).getUsername())
-//                .password(passwordEnoder.encode("password"))
-                            .password(userDTOS.get(i).getPassword())
-                            .roles(userDTOS.get(i).getRole())
-                            .build()
-            );
-            System.out.println(userDetails.get(i).toString());
-
-        }
-
-        return new InMemoryUserDetailsManager(
-                userDetails
-        );
-    }
+//
+//        return new InMemoryUserDetailsManager(
+//                userDetails
+//        );
+//    }
 
 
 }

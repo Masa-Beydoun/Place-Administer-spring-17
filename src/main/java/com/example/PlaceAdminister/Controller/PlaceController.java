@@ -3,7 +3,9 @@ package com.example.PlaceAdminister.Controller;
 import com.example.PlaceAdminister.DTO.PlaceDTO;
 
 import com.example.PlaceAdminister.Request.PlaceRequest;
+import com.example.PlaceAdminister.Request.RegisterRequest;
 import com.example.PlaceAdminister.Service.PlaceService;
+import com.example.PlaceAdminister.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,16 +17,19 @@ import java.util.List;
 public class PlaceController {
     @Autowired
     private PlaceService placeService;
+    @Autowired
+    private UserService userService;
 
 
-    @GetMapping("allplaces")
-    public ResponseEntity getAllPlacess() {
-        List<PlaceDTO> placeList  = placeService.getAllRoomCategories();
-        if(placeList == null || placeList.isEmpty() ){
-            return ResponseEntity.status(200).body("there is no Place yet");
-        }
-        return ResponseEntity.ok(placeList);
-    }
+//    @GetMapping("allplaces")
+//    public ResponseEntity getAllPlacess() {
+//        List<PlaceDTO> placeList  = placeService.getAllRoomCategories();
+//        if(placeList == null || placeList.isEmpty() ){
+//            return ResponseEntity.status(200).body("there is no Place yet");
+//        }
+//        return ResponseEntity.ok(placeList);
+//    }
+
 
     @PostMapping("newplace")
     public ResponseEntity addPlace(@RequestBody PlaceRequest placeRequest) {
